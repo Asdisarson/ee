@@ -1,8 +1,8 @@
 const express = require('express');
 const { v4: uuidv4 } = require('uuid');
 const db = require('../db');
-const DKPlusHandler = require('../handlers/dkplus');
-const WooCommerceHandler = require('../handlers/woocommerce');
+const WebHooksApi = require('../api/WebHooksApi');
+const ApiClient = require('../ApiClient');
 
 const router = express.Router();
 
@@ -27,7 +27,37 @@ router.post('/register', async (req, res) => {
       created_at: new Date().toISOString()
     });
 
-    // Return only the necessary data
+    // Create DK Plus webhook
+    const apiClient = new ApiClient();
+    apiClient.defaultHeaders = {
+      'Authorization': `Bearer ${dkplus_api_key}`
+    };
+    
+    const webhooksApi = new WebHooksApi(apiClient);
+    const webhookData = {
+      description: `WooCommerce Integration - ${website_url}`,
+      url: `${process.env.API_BASE_URL}/api/webhook/dkplus/${apiKey}`,
+      options: {
+        enabled: true,
+        product: true,
+        customer: false,
+        member: false,
+        vendor: false,
+        project: false,
+        timeClock: false,
+        employee: false,
+        generalLedgerTransactions: false
+      },
+      failureEmail: ""
+    };
+
+    await new Promise((resolve, reject) => {
+      webhooksApi.webHooksCreateWebHook(webhookData, (error, data, response) => {
+        if (error) reject(error);
+        else resolve(data);
+      });
+    });
+
     res.json({ 
       apiKey,
       message: 'Registration successful'
