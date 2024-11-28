@@ -11,7 +11,7 @@
 defined('ABSPATH') || exit;
 
 class DK_Plus_Sync {
-        const API_ENDPOINT = 'https://aqueous-lake-29596-fb9117cc06ee.herokuapp.com';
+        const API_ENDPOINT = 'https://aqueous-lake-29596-fb9117cc06ee.herokuapp.com/api';
     const DK_PLUS_API_KEY = '9fd1c68e-64bc-4930-921e-5dd45d1344f6';
     const API_SERVICE_KEY = '1234567890';
 
