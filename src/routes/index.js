@@ -52,7 +52,7 @@ router.post('/register', async (req, res) => {
     };
 
     await new Promise((resolve, reject) => {
-      webhooksApi.webHooksCreateWebHook(webhookData, (error, data, response) => {
+      webhooksApi.webHooksCreateWebhook(webhookData, (error, data, response) => {
         if (error) reject(error);
         else resolve(data);
       });
