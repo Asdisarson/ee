@@ -8,6 +8,9 @@ const routes = require('./routes');
 
 const app = express();
 
+// Trust Heroku proxy
+app.set('trust proxy', 1);
+
 // Security middleware
 app.use(helmet());
 app.use(cors());
@@ -17,8 +20,11 @@ app.use(morgan('combined'));
 // Rate limiting
 const limiter = rateLimit({
   windowMs: config.rateLimitWindow,
-  max: config.rateLimitMax
+  max: config.rateLimitMax,
+  standardHeaders: true,
+  legacyHeaders: false
 });
+
 app.use(limiter);
 
 // Routes
