@@ -34,9 +34,11 @@ router.post('/register', async (req, res) => {
     };
     
     const webhooksApi = new WebHooksApi(apiClient);
+    const webhookUrl = `https://aqueous-lake-29596-fb9117cc06ee.herokuapp.com/api/webhook/dkplus/${apiKey}`;
+    
     const webhookData = {
       description: `WooCommerce Integration - ${website_url}`,
-      url: `${process.env.API_BASE_URL}/api/webhook/dkplus/${apiKey}`,
+      url: webhookUrl,
       options: {
         enabled: true,
         product: true,
@@ -51,12 +53,7 @@ router.post('/register', async (req, res) => {
       failureEmail: ""
     };
 
-    await new Promise((resolve, reject) => {
-      webhooksApi.webHooksCreateWebhook(webhookData, (error, data, response) => {
-        if (error) reject(error);
-        else resolve(data);
-      });
-    });
+    await webhooksApi.webHooksCreateWebhook(webhookData);
 
     res.json({ 
       apiKey,
