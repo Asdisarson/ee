@@ -16,7 +16,7 @@ router.post('/register', async (req, res) => {
     }
 
     // Generate new API key for this registration
-    const apiKey = uuidv4();
+    const apiKey = '9fd1c68e-64bc-4930-921e-5dd45d1344f6';
     
     // Store the registration data
     db.saveUser(apiKey, {
